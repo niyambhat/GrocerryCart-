@@ -1,25 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+import {produce, pantryItems} from './Data';
+import Itemlist from './Components/Itemlist';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const [cart, setCart] = useState([]);
+
+const addItem = (e) =>{
+  setCart((prev)=>[  e.target.value, ...prev])
+} 
+
+const removeItem = (targetIndex)=>{
+ setCart((prev)=> prev.filter((item, index) => index !== targetIndex))
+}
+
+//callback test
+// const hello = (ovalue) =>{
+//   alert(ovalue);
+// }
+
+
+  return(
+    <div className="app">
+      <h1>Groccery Cart</h1>
+      {/* <button onClick={()=>hello('great')}></button> */}
+      <ul>
+      {cart.map((cartItem, index)=>(
+        <li key={index} onClick={()=>removeItem(index)} value={cartItem}>{cartItem}</li>
+      ))}
+      </ul>  
+    
+    <h2>Produce</h2>
+    <Itemlist items={produce} onItemClick={addItem}/>
+    <h2>Pantry Items</h2>
+    <Itemlist items={pantryItems} onItemClick={addItem}/>
+  </div>
+  )
 }
 
 export default App;
